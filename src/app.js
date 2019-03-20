@@ -6,10 +6,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 
 import logger from './logger';
-import { initPassport } from './utils/socialAuth';
-
 import baseRoutes from './routes/baseRoutes';
-import userRoutes from './routes/userRoutes';
+import bootstrap from './bootstrap';
 
 // connect to Mongo DB
 logger.info(`Connecting to ${process.env.MONGO_URI}..`);
@@ -33,12 +31,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Uncomment this to enable social authentication
-initPassport(app);
+// boostrap routes
+// bootstrap();
 
 // Routes
 app.use('/', baseRoutes);
-app.use('/user', userRoutes);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
