@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import logger from './logger';
 import baseRoutes from './routes/baseRoutes';
+import geocodeRoutes from './routes/geocodeRoutes';
 import bootstrap from './bootstrap';
 
 // connect to Mongo DB
@@ -32,10 +33,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // boostrap routes
-// bootstrap();
+if (process.env.INIT_BOOTSTRAP) {
+  // bootstrap();
+}
 
 // Routes
 app.use('/', baseRoutes);
+app.use('/geocode', geocodeRoutes);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

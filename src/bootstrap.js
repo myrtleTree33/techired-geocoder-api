@@ -11,8 +11,8 @@ function genCountriesMap() {
   const { getCountryCodes: countryCodes, all: countryNames } = allCountries;
   for (let i = 0; i < countryCodes.length; i++) {
     output[countryCodes[i]] = {
-      twoCharCountryCode: countryCodes[i],
-      countryName: countryNames[i]
+      twoCharCountryCode: countryCodes[i].toLowerCase(),
+      countryName: countryNames[i].toLowerCase()
     };
   }
   return output;
@@ -26,7 +26,7 @@ function genCitiesArr(countriesMap) {
 
     output.push({
       ...country,
-      cityName: name,
+      cityName: name.toLowerCase(),
       lat,
       lon
     });
