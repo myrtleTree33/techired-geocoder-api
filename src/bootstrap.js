@@ -24,23 +24,28 @@ function genCitiesArr(countriesMap) {
     const { country: countryCode, name, lat, lon } = cities[i];
     const country = countriesMap[countryCode];
 
+    const loc = {
+      type: 'Point',
+      coordinates: [lon, lat]
+    };
+
     output.push({
       ...country,
       cityName: name.toLowerCase(),
-      lat,
-      lon
+      loc
     });
   }
   return output;
 }
 
 export default function bootstrap() {
-  logger.info('Bootstrapping cities.');
   const countriesMap = genCountriesMap();
   const citiesArr = genCitiesArr(countriesMap);
 
   (async () => {
+    logger.info('Clearing cities DB..');
     await City.remove({});
-    await City.insertMany(citiesArr).then(() => console.log('done'));
+    logger.info('Bootstrapping cities..');
+    await City.insertMany(citiesArr).then(() => logger.info('Bootstrapping cities done.'));
   })();
 }

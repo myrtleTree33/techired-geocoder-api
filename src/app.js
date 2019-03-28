@@ -33,9 +33,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // boostrap routes
-if (process.env.INIT_BOOTSTRAP) {
-  // bootstrap();
-}
+// if (process.env.INIT_BOOTSTRAP) {
+// bootstrap();
+// }
 
 // Routes
 app.use('/', baseRoutes);

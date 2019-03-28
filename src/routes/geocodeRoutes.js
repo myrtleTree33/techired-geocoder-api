@@ -81,4 +81,48 @@ routes.post('/decode', async (req, res, next) => {
   });
 });
 
+routes.post('/nearest', async (req, res, next) => {
+  const { city, country, distance } = req.body;
+
+  if (!city) {
+    return res.json('Please specify a city.');
+  }
+
+  const citySanitized = city.trim().toLowerCase();
+  const countrySanitized = (country || '').trim().toLowerCase();
+  const distSanitized = parseInt(distance, 10);
+
+  const query = {
+    cityName: citySanitized
+  };
+
+  // add if available
+  if (country) {
+    query.countryName = countrySanitized;
+  }
+
+  const rootCity = await City.findOne(query);
+
+  if (!rootCity) {
+    return res.json({ error: 'No such city!', cities: [] });
+  }
+
+  const { coordinates } = rootCity.loc;
+
+  const nearestCities = await City.find({
+    loc: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates
+        },
+        $minDistance: 0,
+        $maxDistance: distSanitized
+      }
+    }
+  });
+
+  return res.json({ cities: nearestCities });
+});
+
 export default routes;

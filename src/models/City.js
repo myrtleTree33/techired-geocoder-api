@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import pointSchema from './Point';
 
 let mongooseHidden = require('mongoose-hidden')();
 
@@ -22,12 +23,8 @@ const citySchema = new Schema({
     required: true,
     default: Date.now
   },
-  lat: {
-    type: Number,
-    required: true
-  },
-  lon: {
-    type: Number,
+  loc: {
+    type: pointSchema,
     required: true
   }
 });
