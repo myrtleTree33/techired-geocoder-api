@@ -56,7 +56,7 @@ async function findCities(tokens) {
 routes.post('/decode', async (req, res, next) => {
   const { query } = req.body;
   if (!query) {
-    return next('Specify a query.');
+    return res.json({ cities: [], countries: [] });
   }
   let tokens = query.split(',') || [];
   tokens = tokens.map(t => {
